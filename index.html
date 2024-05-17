@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHAT - WTT</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1></h1>
+    </header>
+
+    <main>
+        
+         <ul id="mensagens">
+            <br>
+        </ul>
+        
+    </main>
+
+
+    <footer>
+        <form id="form">
+            <input type="text" id="nome" placeholder="Seu nome de usuário">
+            <br><br>
+            <input type="text" id="msg" placeholder="sua mensagem"><br><br>
+            <button id="btn"><strong>ENVIAR</strong></button>
+        </form>
+    </footer>
+
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        //Criar uma instancia do socket.io
+        const socket = io();
+        //Seleciona o valor do input nome de usuario
+        const NomeInput = document.getElementById('nome');
+        //Seleciona o valor do input da mensagem 
+        const mensagemInput = document.getElementById('msg');
+        //Seleciona a lista de mensagens
+        const mensagens = document.getElementById('mensagens');
+        
+
+        
+       //Evento do envio do formulário
+       document.querySelector('form').addEventListener('submit', event => {
+        event.preventDefault();
+        const nome = NomeInput.value;
+        const mensagem = mensagemInput.value;
+        //Verifica se os valores estão em branco
+        nome.trim() && mensagem.trim() && socket.emit('chat message', {nome, mensagem})
+        //Limpar o input da mensagem
+        mensagemInput.value = '';
+        //desabilita o input de nome do usuario
+        NomeInput.disabled = true;
+        // Adiciona uma classe específica para mensagens enviadas pelo usuário
+        const classe = nome.trim() ? 'user-message' : '';
+        
+        // Emitir o evento para o servidor
+        //socket.emit('chat message', { nome, mensagem, classe });
+
+    });
+        
+
+        socket.on('chat message', dados => {
+            //criar elemento de lista para exibir a mensagem
+            const lista = document.createElement('li');
+            //Define o texto
+            lista.textContent = `${dados.nome}: ${dados.mensagem}`;
+            //adcionar o elemento de lista de mensagem
+            mensagens.appendChild(lista);
+        })
+
+    </script>
+</body>
+</html>
