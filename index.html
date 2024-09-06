@@ -27,15 +27,18 @@
             <input type="text" id="nome" placeholder="Seu nome de usuário">
             <br><br>
             <input type="text" id="msg" placeholder="sua mensagem"><br><br>
-            <button id="btn"><strong>ENVIAR</strong></button>
+            <button id="btn" onclick="but()"><strong>ENVIAR</strong></button>
         </form>
     </footer>
 
     
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        mes = document.getElementById("msg").value
-        alert(mes)
+        function but(){
+            mes = document.getElementById("msg").value
+            alert(mes)
+        }
+        
         //Criar uma instancia do socket.io
         const socket = io();
         //Seleciona o valor do input nome de usuario
